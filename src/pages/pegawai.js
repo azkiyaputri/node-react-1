@@ -1,18 +1,18 @@
 import React from 'react'
 import axios from 'axios'
-import {Button, Modal, Table, Card, form} from 'react-bootstrap'
+import {Button,Modal, Table, Card, Form} from 'react-bootstrap' 
 
 class Pegawai extends React.Component {
     constructor() {  
         super();  
         this.state = {  
             pegawai: [],
-            id_pegawai:"",
-            nama_pegawai:"",
-            alamat:"",
-            search:"",
-            action:"",          
-            isModalOpen: false
+            id_pegawai: "",
+            nama_pegawai: "",
+            alamat: "",
+            search: "",
+            action: "",
+          isModalOpen: false
         }  
     }
     bind = (event) => {
@@ -43,7 +43,7 @@ class Pegawai extends React.Component {
     }
     handleSave = (event) => {
         event.preventDefault();
-        /* menampung data id, nama dan alamat dari Form
+        /* menampung data nip, nama dan alamat dari Form
         ke dalam FormData() untuk dikirim  */
         let url = "";
         if (this.state.action === "insert") {
@@ -57,7 +57,6 @@ class Pegawai extends React.Component {
           nama_pegawai: this.state.nama_pegawai,
           alamat: this.state.alamat
         }
-    
         // mengirim data ke API untuk disimpan pada database
         axios.post(url, form)
         .then(response => {
@@ -67,7 +66,7 @@ class Pegawai extends React.Component {
         .catch(error => {
           console.log(error);
         });
-        // menutup form modal
+
         this.setState({
             isModalOpen: false
         })
@@ -83,6 +82,10 @@ class Pegawai extends React.Component {
         .catch(error => {
           console.log(error);
         });
+    }
+    componentDidMount(){
+        // method yang pertama kali dipanggil pada saat load page
+        this.getPegawai()
     }
     findPegawai = (event) => {
         let url = "http://localhost:2000/pegawai";
@@ -103,10 +106,6 @@ class Pegawai extends React.Component {
           });
         }
     }
-    componentDidMount(){
-        // method yang pertama kali dipanggil pada saat load page
-        this.getPegawai()
-    }
     Drop = (id_pegawai) => {
         let url = "http://localhost:2000/pegawai/" + id_pegawai;
         // memanggil url API untuk menghapus data pada database
@@ -121,10 +120,15 @@ class Pegawai extends React.Component {
           });
         }
     }
+    componentDidMount(){
+        // method yang pertama kali dipanggil pada saat load page
+        this.getPegawai()
+    }
     render(){
+        console.log(this.state.pegawai)
         return(
             <>
-                <Card>
+            <Card>
                 <Card.Header className="card-header bg-info text-white" align={'center'}>Data Pegawai</Card.Header>
                 <Card.Body>
                 <input type="text" className="form-control mb-2" name="search" value={this.state.search} onChange={this.bind} onKeyUp={this.findPegawai} placeholder="Pencarian..." />
@@ -167,10 +171,9 @@ class Pegawai extends React.Component {
                     <Modal.Header closeButton>
                     <Modal.Title>Form Pegawai</Modal.Title>
                     </Modal.Header>
-                    <form onSubmit={this.handleSave}>
-                        <Modal.Body>
-                        <div className="modal-body">  
-                        Id  
+                    <Form onSubmit={this.handleSave}>
+                    <Modal.Body>
+                        ID 
                         <input type="number" name="id_pegawai" value={this.state.id_pegawai} onChange={this.bind}  
                         className="form-control" required />  
                         Nama  
@@ -179,14 +182,13 @@ class Pegawai extends React.Component {
                         Alamat  
                         <input type="text" name="alamat" value={this.state.alamat} onChange={this.bind}  
                         className="form-control" required />  
-                    </div>  
-                        </Modal.Body>
-                        <Modal.Footer>  
+                    </Modal.Body>
+                    <Modal.Footer>
                         <button className="btn btn-sm btn-success" type="submit">  
                             Simpan  
-                        </button>   
-                        </Modal.Footer>
-                    </form>
+                        </button>  
+                    </Modal.Footer>
+                    </Form>
                 </Modal>
             </>
     );  
